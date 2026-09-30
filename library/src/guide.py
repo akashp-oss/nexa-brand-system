@@ -21,7 +21,7 @@ def board_intro(num, label, title, body, color=BLACK, accent=BLUE, rail_color=No
                               text('Body', body, 'body', color, 18, {'max-width': '470px', 'margin-top': '12px'})],
                     l=BM, t=132, w=520, gap=22))
 
-f1 = (photo('Brand light', 'tex-streaks', 0, 0, BW, BH)
+f1 = (photo('Brand light', 'tex-aurora-a', 0, 0, BW, BH)
       + rail(BW - 2 * BM, WHITE, ['NEXA', 'Brand asset library · Version 1.0', YEAR], BM, BH - 60, 14)
       + hl('Kicker', 'WHAT’S NEXT', ACC, 40, l=BM, t=64)
       + wordmark(1560, GRAY, l=(BW - 1560) // 2 - 20, t=(BH - round(1560 * WM['h'] / WM['w'])) // 2))
@@ -92,13 +92,13 @@ f4 = (board_intro('02', 'Colour pairings', 'APPROVED\nPAIRS',
 F.append(('found', artboard('fd-pairs', 'Foundations · Colour pairings', BW, BH, WHITE, f4, 'Brand board', 'board')))
 
 # typography
-rows = [('HEADER', 'hl', 120, 'N27 Regular (Saira) · 120 pt', 'Uppercase'),
+rows = [('HEADER', 'hl', 120, 'N27 Regular · 120 pt', 'Uppercase'),
         ('SUB-HEADER 1', 'sh1', 48, 'Roboto Regular · 48 pt', 'Uppercase'),
         ('Sub-Header 2', 'sh2', 36, 'Roboto Regular · 36 pt', 'Title Case'),
         ('Sub-Header 3', 'sh3', 24, 'Roboto Bold · 24 pt', 'Title Case')]
 f5 = (board_intro('03', 'Typography', 'CLEAR,\nBOLD, NEXT',
-                  'N27 for headlines, always uppercase and never bold. Roboto for sub-headers and body. '
-                  'Each level steps by about 1.5× (a perfect fifth). If N27 is not installed, Saira stands in.')
+                  'N27 for headlines, always uppercase and never bold, and for contact details. Roboto Light for statements, '
+                  'Roboto Bold for titles, Roboto Black for section heads and big numbers. Each level steps by about 1.5×.')
       + fill('Panel', '#DCDBDC', l=680, t=0, w=1240, h=BH)
       + ''.join(line('Rule', '#9E9C9E', 680, y, 1240) for y in (300, 450, 580, 700, 830))
       + ''.join(T('Spec', spec, 'small', BLACK, 14, l=720, t=y - 36) + T('Case', case, 'small', BLACK, 14, l=1050, t=y - 36)
@@ -117,7 +117,7 @@ def tile(i, name, inner, cap):
 f6 = (board_intro('04', 'Graphic devices', 'BRACKETS\nHOLD IDEAS',
                   'Everything comes from the logo. The X splits into two brackets that frame images, the emblem becomes a window, '
                   'and the X joins an industry to mobility.', WHITE, ACC, GRAY)
-      + tile(0, 'Brackets', fill('Fill', BLUE, l=0, t=0, w=gw, h=gh) + photo('Image', 'tex-tunnel', 70, 40, gw - 140, gh - 80)
+      + tile(0, 'Brackets', fill('Fill', BLUE, l=0, t=0, w=gw, h=gh) + photo('Image', 'ph-command', 70, 40, gw - 140, gh - 80, '60% 50%')
              + chevron(110, ACC, 'open', l=36, t=145) + chevron(110, ACC, 'close', r=36, t=145),
              'Brackets  ><  frame an image or a focal point. Secondary colour on Super Blue or black.')
       + tile(1, 'X window', fill('Fill', GRAY, l=0, t=0, w=gw, h=gh) + xwindow('X window', 'ph-clinician', 99, 32, 400, 'xMidYMid', 1.25),
@@ -133,14 +133,15 @@ f6 = (board_intro('04', 'Graphic devices', 'BRACKETS\nHOLD IDEAS',
 F.append(('found', artboard('fd-devices', 'Foundations · Graphic devices', BW, BH, BLACK, f6, 'Brand board', 'board')))
 
 # imagery
-f7 = (board_intro('05', 'Imagery', 'REAL WORK,\nREAL COLOUR',
-                  'Photograph people and devices at work in their real colour: clinicians, crews, drivers, dispatchers. '
-                  'Crop tight, into the action. Brand light (fibre, ribbons, light trails) adds energy behind type. '
-                  'The Super Blue grade is a special effect for split layouts only, never a default filter.')
-      + T('Row label', 'PHOTOGRAPHY · NATURAL COLOUR', 'label', BLUE, 15, l=640, t=112)
-      + ''.join(photo(n, k, 640 + i * 412, 142, 392, 380, p) for i, (n, k, p) in enumerate([('Health', 'ph-clinician', '40% 40%'), ('Public safety', 'ph-crew', '50% 50%'), ('Logistics', 'ph-driver', '50% 50%')]))
-      + T('Row label', 'BRAND LIGHT · TEXTURES   /   SUPER BLUE GRADE (SPLIT LAYOUTS ONLY)', 'label', BLUE, 15, l=640, t=566)
-      + ''.join(photo(n, k, 640 + i * 412, 596, 392, 380, p) for i, (n, k, p) in enumerate([('Fibre', 'tex-fiber', '70% 40%'), ('Ribbon', 'tex-ribbon', '75% 50%'), ('Super Blue grade', 'phb-crowd', '50% 50%')]))
+f7 = (board_intro('05', 'Imagery', 'REAL WORK,\nIN THREE TONES',
+                  'People and devices at work, cropped into the action. Three treatments, as in NEXA’s own posts: natural colour; '
+                  'night tone for statements over a photo; and a Super Blue veil for case-study cards. Light comes from NEXA’s '
+                  'own backgrounds and the MWC video, never from stock effects.')
+      + T('Row label', 'NATURAL  ·  NIGHT TONE  ·  SUPER BLUE VEIL (CASE STUDIES)', 'label', BLUE, 15, l=640, t=112)
+      + ''.join(photo(n, k, 640 + i * 412, 142, 392, 380, p) for i, (n, k, p) in enumerate([('Natural', 'ph-crew', '50% 50%'), ('Night tone', 'phn-driver', '50% 50%'), ('Super Blue veil', 'ph-clinician', '40% 40%')]))
+      + fill('Veil', 'rgba(31,31,204,.84)', l=1464, t=142, w=392, h=380)
+      + T('Row label', 'LIGHT · FROM NEXA’S OWN BACKGROUNDS AND MWC VIDEO', 'label', BLUE, 15, l=640, t=566)
+      + ''.join(photo(n, k, 640 + i * 412, 596, 392, 380, p) for i, (n, k, p) in enumerate([('X of light', 'tex-xlight', '80% 50%'), ('Arcs of light', 'tex-arcs', '40% 50%'), ('Aurora (MWC video)', 'tex-aurora-b', '50% 50%')]))
       + T('Note', 'Photos are placeholders from the Sonim library. Replace with licensed NEXA photography.', 'small', BLACK, 13, l=640, t=1000))
 F.append(('found', artboard('fd-imagery', 'Foundations · Imagery', BW, BH, WHITE, f7, 'Brand board', 'board')))
 
@@ -177,10 +178,13 @@ def study_col(i, key, name, acc, tint, note):
                + fill('Swatch', acc, l=0, t=552, w=cw, h=56) + T('Accent hex', acc.upper(), 'sh3', BLACK, 15, l=0, t=620)
                + T('Note', note, 'small', BLACK, 14, l=0, t=648, w=cw)
                + (T('Pick', 'RECOMMENDED', 'lbl', BLUE, 12, l=0, t=760) if key == 'lavender' else ''))
-f9 = (board_intro('07', 'Secondary colour', 'LESS NEON,\nMORE NEXA',
-                  'The brandbook’s Bright Turquoise is a neon: great in a spark, tiring across a feed. Five options for the '
-                  'secondary colour, each shown on Super Blue, on black and as a light tint. Try them live with the '
-                  'Secondary switcher in the top bar.')
+f9 = (board_intro('07', 'Secondary colour', 'LIGHT,\nNOT NEON',
+                  'NEXA’s own backgrounds answer the question: Midnight grounds lit by Electric Blue and Sky. Electric Azure '
+                  'is the secondary for marks and labels; Bright Turquoise stays as a thin line of light. Compare them live '
+                  'with the Secondary switcher.')
+      + ''.join(fill(n, c, l=BM + i * 176, t=760, w=160, h=120) + T('Name', n.upper(), 'label', BLACK, 12, l=BM + i * 176, t=892)
+                + T('Hex', c, 'small', BLACK, 13, l=BM + i * 176, t=912)
+                for i, (n, c) in enumerate([('Midnight', MIDNIGHT), ('Electric', ELECTRIC), ('Sky', SKY)]))
       + ''.join(study_col(i, *a) for i, a in enumerate(ACCENTS)))
 F.append(('found', artboard('fd-secondary', 'Foundations · Secondary colour study', BW, BH, WHITE, f9, 'Brand board', 'board')))
 

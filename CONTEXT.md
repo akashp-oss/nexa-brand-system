@@ -27,9 +27,8 @@ the social, deck, web and stationery layouts here are new work derived from the 
 | Page furniture | three-point rail “NEXA · Version 1.0 · 2024” | `rail()` |
 | In situ | split images (industry photo + tech texture), white wordmark centred, “HEALTH X MOBILITY” lockup, blue-graded photography | `lockup()`, Super Blue grade |
 
-**Fonts.** N27 is licensed and not in the repo. Everything renders in **Saira** (OFL), the closest open face to N27's
-squared, technical forms, with `N27` first in the font stack so it takes over wherever it is installed.
-Roboto (Apache 2.0) is the brand's own second face. Both are embedded in the HTML.
+**Fonts.** The real **N27 Regular** (`NEXA_Typography/N27-Regular.otf`) and Roboto are embedded in the HTML; Saira
+remains only as a fallback. The N27 file allows embedding (fsType 8), but check the licence covers a public website.
 
 ## 3. Graphic devices (new, derived from the brandbook)
 
@@ -54,21 +53,42 @@ Roboto (Apache 2.0) is the brand's own second face. Both are embedded in the HTM
   15M+ devices deployed, designed in the USA, verticals: healthcare, retail, hospitality, transportation & logistics,
   public safety, defense. Sonim is a NEXA company.
 
+## 3c. Round 3: rebuilt on NEXA's own references
+
+Sources read in full: `NEXA_LogoSystem/` (official wordmark, tagline lockup, emblem), `NEXA_Typography/`,
+`reference/NEXA_Colors.pdf`, `Asset Inspiration/` (X-light and slab backgrounds, arcs, banner, CTA section,
+business card, Healthcare One Pager, MWC video), `reference/NEXA_Case_Study_Oneview_One_Pager.pdf`,
+`reference/social-examples/` (case-study card, night statement, letterhead and web mock-ups, brandbook posts).
+
+What NEXA's own work does, and the library now follows:
+- **Logo:** official artwork (`brand/logo/extract_official.js` reads the SVGs); white on dark, Super Blue on white.
+- **Colour in practice:** Super Blue for panels and case studies; **Midnight #00133A → Electric #0068F4 → Sky #00A1F6**
+  light for dark grounds. Secondary default is now **Electric Azure #3AA8FF**, sampled from those visuals.
+  Bright Turquoise remains as an option, used as a line of light, not a fill.
+- **Type in practice:** N27 uppercase headlines; **Roboto Light** statements ("Custom-Built Mobility Solutions for
+  Enterprise."); Roboto Bold titles; **Roboto Black** uppercase section heads and big numbers with small suffixes
+  (50%, 2K, 50+); N27 for contact details (business card); thin `>` chevron bullets.
+- **Devices:** the X of light and the slanted slab of light (web backgrounds), the outline slash (case-study card),
+  Super Blue veil over photos for case studies, night tone for statements, NEXA | partner lockup, dot QR code.
+- **Copy** from the collateral: Oneview Healthcare case study (50% / 2K / 50+), healthcare use cases,
+  "By 2027 up to 60% of patient interactions will be virtual", four pillars (Custom Devices, Rhino Mobility,
+  Managed Services, Wireless Connectivity), Android Enterprise Gold partner.
+
 ## 4. Imagery
 
-- **Natural colour** by default. **Super Blue grade** (`brand/imagery/grade.py`) only for brand-light split layouts (`phb-*`).
-- **Brand light** (`brand/imagery/textures.html`): generated fibre burst, light trails, neon tunnel, ribbon X, data wave and horizon grid. No licence needed.
-- **Placeholders:** the `ph-*` photos are reused from the Sonim system (mostly Pexels; `ph-clinician` comes from Sonim's site collage and its source is unknown). Replace them all with licensed NEXA photography before publishing externally.
+- **Light:** `tex-xlight`, `tex-slab`, `tex-arcs`, `tex-xbanner` (from Asset Inspiration) and `tex-aurora-*`
+  (frames of the MWC video with the logo row removed).
+- **Photos:** natural colour; `phn-*` night tone for statements; Super Blue veil applied in layout for case studies.
+- **Placeholders:** the `ph-*` photos come from the Sonim system (mostly Pexels). Replace with NEXA photography.
 
-## 5. Asset sets (v2)
+## 5. Asset sets (v3)
 
-Library: Square posts (17) · Carousels & portrait (6) · Stories (4) · LinkedIn & X (6) · Presentation (5) · Web & email (3) · Stationery (3).
-Brand guidelines: 9 boards (adds Containers and Secondary colour study).
+Library (48): Square posts (18) · Carousel & portrait (6) · Stories (4) · LinkedIn & X (6) · Sales collateral (2) ·
+Presentation (5) · Web & email (4) · Stationery (3). Brand guidelines: 9 boards.
 
 ## 6. Open items
 
-- Licensed N27 font files, to check the Saira stand-in against the real face.
-- Official logo artwork from NEXA. The SVGs here are traced from the brandbook's vectors, so they are exact, but confirm with the source files.
-- Real NEXA photography and industry list (the in-situ pages show Health, Retail and Defense).
-- Stats on the stats slide are placeholders: replace them with sourced figures.
-- Waiting on the client's folders (fonts, graphic-use guidelines, asset inspiration) and an export of the Figma social page (figma.com is not reachable from the build environment).
+- Partner and customer logos are dashed placeholders (Oneview, InfoBionic, Android, Rhino, Sonim).
+- Real NEXA photography; the healthcare product shot from the one-pager if a clean file exists.
+- Confirm the secondary colour (Electric Azure recommended) and N27 web-embedding licence.
+- The Figma social page is still unseen (figma.com is not reachable from the build environment); export it as PNG/PDF.

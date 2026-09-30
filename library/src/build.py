@@ -20,7 +20,7 @@ _W = {'thin': 100, 'extralight': 200, 'light': 300, 'regular': 400, 'medium': 50
 _MIME = {'woff2': 'font/woff2', 'woff': 'font/woff', 'otf': 'font/otf', 'ttf': 'font/ttf'}
 _FMT = {'woff2': 'woff2', 'woff': 'woff', 'otf': 'opentype', 'ttf': 'truetype'}
 N27 = {}
-for f in sorted((ROOT / 'brand/fonts').rglob('*')):
+for f in sorted([*(ROOT / 'brand/fonts').rglob('*'), *(ROOT / 'NEXA_Typography').rglob('*')]):
     ext = f.suffix.lower().lstrip('.')
     if 'n27' not in f.name.lower() or ext not in _MIME or 'italic' in f.name.lower(): continue
     key = re.sub(r'[^a-z]', '', f.stem.lower().replace('n27', ''))
@@ -54,18 +54,18 @@ HERO_ART = (f'<svg viewBox="0 0 {_hw} {_hh}"><defs><clipPath id="heroclip"><poly
 ALL_META = [(s_, t_) for s_, t_, _ in TP.SECTION_META + GD.SECTION_META]
 N_LIB, N_GUIDE = len(TP.F), len(GD.F)
 
-def paths(d): return ''.join('<path d="%s"/>' % p for p in d)
-def svg_logo(d, w, h, fill, cls=''):
-    return f'<svg class="{cls}" viewBox="0 0 {w} {h}" fill="{fill}" aria-hidden="true">{paths(d)}</svg>'
-WM_UI = svg_logo(WM['d'], WM['w'], WM['h'], '#fff', 'wm')
-EM_UI = svg_logo(EM['d'], EM['w'], EM['h'], 'currentColor', 'em')
+def paths(inner): return inner
+def svg_logo(inner, w, h, fill, cls=''):
+    return f'<svg class="{cls}" viewBox="0 0 {w} {h}" fill="{fill}" aria-hidden="true">{inner}</svg>'
+WM_UI = svg_logo(WM['inner'], WM['w'], WM['h'], '#fff', 'wm')
+EM_UI = svg_logo(EM['inner'], EM['w'], EM['h'], 'currentColor', 'em')
 FAVICON = 'data:image/svg+xml,' + urllib.parse.quote(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="{BLUE}"/>'
-    f'<g transform="translate(10 16.6) scale({44 / EM["w"]})" fill="#A6A8FF">{paths(EM["d"])}</g></svg>')
+    f'<g transform="translate(10 16.6) scale({44 / EM["w"]})" fill="#3AA8FF">{EM["inner"]}</g></svg>')
 
 CSS = r"""
 :root{--blue:#1F1FCC;--gray:#C9C7C9;--turq:#36FFE8;--pink:#FF5FEB;--purple:#2D0685;--black:#000;
-  --acc:#A6A8FF;--tint:#ECECFC;--canvas:#EFEEF0;--line:#E2E1E2;--muted:#6F6D6F;--ui:Roboto,Arial,sans-serif;--head:'N27','Saira',sans-serif;--top:64px;--side:300px}
+  --acc:#3AA8FF;--tint:#E9F2FF;--canvas:#EFEEF0;--line:#E2E1E2;--muted:#6F6D6F;--ui:Roboto,Arial,sans-serif;--head:'N27','Saira',sans-serif;--top:64px;--side:300px}
 *{box-sizing:border-box}
 html{scroll-padding-top:calc(var(--top) + 16px)}
 html,body{margin:0;background:var(--canvas);color:#000;font-family:var(--ui)}
@@ -194,6 +194,10 @@ body[data-view=library]:not(.figma) [data-view=guide],body[data-view=guide]:not(
 .ab .rail{font-weight:400;line-height:1;white-space:nowrap}
 .ab .lock{font-weight:400;line-height:1;letter-spacing:.02em;white-space:nowrap}
 .ab .st{font-weight:700;line-height:1.06;letter-spacing:-.015em}
+.ab .lt{font-weight:300;line-height:1.14;letter-spacing:-.005em}
+.ab .hb{font-weight:900;line-height:1.02;letter-spacing:.01em}
+.ab .stat{font-weight:900;line-height:.8;letter-spacing:-.03em}
+.ab .n27{font-family:var(--head);font-weight:400;line-height:1.38}
 .ab .lbl{font-family:var(--head);font-weight:400;line-height:1;letter-spacing:.09em;white-space:nowrap}
 .ab .cutout{object-fit:contain}
 .ab .tagline{font-weight:500;line-height:1;letter-spacing:.01em;white-space:nowrap}
@@ -250,7 +254,7 @@ JS = (open(HERE / 'export.js').read() + '\n' + open(HERE / 'app.js').read()).rep
 JS += "\n" + open(HERE / 'views.js').read().replace('__ACCENTS__', json.dumps([{'key': k, 'name': n, 'acc': a, 'tint': t} for k, n, a, t, _ in ACCENTS]))
 
 CHIPS = ''.join(f'<button class="chip" data-hex="{h}" title="Copy {h}"><s style="background:{h}"></s><span><b>{n}</b>{h}</span></button>' for n, h, *_ in PALETTE)
-PAIRS = ''.join(f'<div class="pair" style="background:{bg}" title="Logo {fg} on {bg}">{svg_logo(EM["d"], EM["w"], EM["h"], fg)}</div>' for bg, fg in PAIRS_OK)
+PAIRS = ''.join(f'<div class="pair" style="background:{bg}" title="Logo {fg} on {bg}">{svg_logo(EM["inner"], EM["w"], EM["h"], fg)}</div>' for bg, fg in PAIRS_OK)
 RULES = f"""
 <div class="rules" data-name="Brand rules">
   <div class="side-h">Brand rules</div>
@@ -259,7 +263,7 @@ RULES = f"""
   <div class="rule"><h4>Type</h4>
     <div class="sample">What’s next</div><div class="sample2">Roboto for sub-headers and body.</div>
     <dl class="kv"><dt>Headline</dt><dd>N27 Regular, UPPERCASE. Now: {HEAD_NAME}.</dd><dt>Statement</dt><dd>Roboto Bold, sentence case</dd><dt>Sub-heads</dt><dd>Roboto Regular / Bold</dd><dt>Scale</dt><dd>1.5× per level (perfect fifth)</dd></dl></div>
-  <div class="rule"><h4>Secondary colour (experiment)</h4><p>Switch it live in the top bar. Periwinkle is the recommendation; Bright Turquoise is the brandbook original. The study is in Brand guidelines.</p></div>
+  <div class="rule"><h4>Secondary colour (experiment)</h4><p>Electric Azure, sampled from NEXA’s own backgrounds and MWC visuals, is the default. Switch it live in the top bar to compare with the brandbook turquoise.</p></div>
   <div class="rule"><h4>Containers</h4><dl class="kv"><dt>Cut</dt><dd>Top-left + bottom-right, 45°, ≈16% of short side</dd><dt>Slab</dt><dd>Cut edge echoed outward in Base Gray</dd><dt>Live area</dt><dd>Equally inset from every edge</dd></dl></div>
   <div class="rule"><h4>Logo</h4>
     <dl class="kv"><dt>Place</dt><dd>Wordmark bottom-left, emblem top-right</dd><dt>Space</dt><dd>X height on every side</dd><dt>Min</dt><dd>Wordmark 200 px · emblem 50 px</dd></dl></div>
@@ -307,7 +311,7 @@ page = f"""<!doctype html>
 </div>
 <main class="canvas" data-name="Canvas">
 <div class="hero" data-view="library">
-  <svg class="wmk" viewBox="0 0 {EM['w']} {EM['h']}" fill="currentColor" aria-hidden="true">{paths(EM['d'])}</svg>
+  <svg class="wmk" viewBox="0 0 {EM['w']} {EM['h']}" fill="currentColor" aria-hidden="true">{EM['inner']}</svg>
   <div>
     <div class="kicker">NEXA · BRAND ASSET LIBRARY</div>
     <h1>One brand.<br>Every channel.</h1>
@@ -317,7 +321,7 @@ page = f"""<!doctype html>
   <div class="hero-art" aria-hidden="true">{HERO_ART}</div>
 </div>
 <div class="guide-head" data-view="guide">
-  <svg class="wmk" viewBox="0 0 {EM['w']} {EM['h']}" fill="currentColor" aria-hidden="true">{paths(EM['d'])}</svg>
+  <svg class="wmk" viewBox="0 0 {EM['w']} {EM['h']}" fill="currentColor" aria-hidden="true">{EM['inner']}</svg>
   <div class="kicker">NEXA · BRAND GUIDELINES</div>
   <h1>The rules behind<br>every asset.</h1>
   <p>{N_GUIDE} boards from the NEXA Brand Guidelines v1.0 and the NEXA Figma visual identity: logo, colour, type, graphic devices, imagery, containers and the secondary colour study.</p>

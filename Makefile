@@ -3,10 +3,10 @@
 
 all: library
 
-logo:             ## brand/logo/*.svg + logo.json, traced from the brandbook vectors
-	python3 brand/logo/extract_logo.py reference/NEXA_Brand_Guidelines_2024_v1.0.pdf brand/logo
+logo:             ## brand/logo/*.svg + logo.json from the official NEXA_LogoSystem SVGs
+	node brand/logo/extract_official.js
 
-imagery:          ## generated brand-light textures -> library/src/img/tex-*.jpg
+imagery:          ## (textures now come from Asset Inspiration; generated set kept for reference)
 	node brand/imagery/render_textures.js library/src/img
 
 library:          ## library/dist/NEXA_Brand_Asset_Library.html

@@ -119,6 +119,15 @@
         const rad = parseFloat(cs.borderTopLeftRadius) || 0;
         if (bg) out += `<rect id="${el.classList.contains('shape') ? id(el) : 'Fill'}" x="${N(r.x)}" y="${N(r.y)}" width="${N(r.w)}" height="${N(r.h)}"${rad ? ` rx="${N(Math.min(rad, r.w / 2))}"` : ''} fill="${bg}"${alpha(cs.backgroundColor) < 1 ? ` fill-opacity="${N(alpha(cs.backgroundColor))}"` : ''}/>`;
         out += borderRect(el, r, cs);
+        const gi = cs.backgroundImage;
+        if (gi && gi.startsWith('linear-gradient(')) {   /* vertical gradients (photo shades) */
+          const gid = 'grad' + (++clipN);
+          const stops = [...gi.matchAll(/(rgba?\([^)]+\))\s*([\d.]+%)?/g)].map((m, i, a) => {
+            const c = m[1].match(/[\d.]+/g).map(Number); const off = m[2] || (i / Math.max(1, a.length - 1) * 100 + '%');
+            return `<stop offset="${off}" stop-color="${hex('rgb(' + c.slice(0, 3).join(',') + ')')}" stop-opacity="${c[3] ?? 1}"/>`; }).join('');
+          defs.push(`<linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">${stops}</linearGradient>`);
+          out += `<rect id="${id(el)}" x="${N(r.x)}" y="${N(r.y)}" width="${N(r.w)}" height="${N(r.h)}" fill="url(#${gid})"/>`;
+        }
         if (el.classList.contains('tx')) {
           const spans = textRuns(el, rel).map(t => `<tspan x="${N(t.x)}" y="${N(t.baseline)}" fill="${t.style.fill}" font-size="${N(t.style.size)}" font-family="${esc(famName(t.style.family))}" font-weight="${t.style.weight}"${t.style.ls ? ` letter-spacing="${N(t.style.ls)}"` : ''}>${esc(t.text)}</tspan>`).join('');
           return out + `<text id="${id(el)}" xml:space="preserve">${spans}</text>`;
