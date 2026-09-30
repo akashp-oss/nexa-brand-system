@@ -46,8 +46,9 @@ remains only as a fallback. The N27 file allows embedding (fsType 8), but check 
   softer member of the Super Blue family that matches the pale X in the NEXA Figma. Alternatives: Bright Turquoise
   (brandbook), Ice Mint #9FE8DC, Signal Coral #FF7A5C, Base Gray. Defined in `ACCENTS` (`gen.py`).
 - **Photography in natural colour.** The Super Blue grade is kept only for the brand-light split post.
-- **Containers** from the NEXA Figma "Visual identity" page: top-left and bottom-right corners cut at 45°, Base Gray
-  slabs echoing each cut outward, pale X watermark, live area equally inset (`chamfer()`, `watermark()`).
+- **Containers** from the NEXA Figma "Visual identity" page: a rectangle with the top-left and bottom-right corners
+  cut (vertical run ≈ 1.19 × horizontal, slightly steeper than 45°), nothing added outside the shape (the grey flaps
+  in the Figma are construction guides only), live area equally inset from every edge (`chamfer()`).
 - **Statements** in Roboto Bold, sentence case (as in the Figma), alongside uppercase N27 headlines.
 - Copy uses public NEXA facts (nexamobility.com, press): formerly Social Mobile (rebrand 2025), founded 2011,
   15M+ devices deployed, designed in the USA, verticals: healthcare, retail, hospitality, transportation & logistics,

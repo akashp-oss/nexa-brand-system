@@ -166,26 +166,41 @@ def artboard(aid, name, w, h, bg, inner, use, fmt, em=None):
 # ---------------------------------------------------------------- container system (NEXA Figma "visual identity")
 def _pts(pts): return ' '.join(f'{x:.1f},{y:.1f}' for x, y in pts)
 
-def chamfer(name, l, t, w, h, c=None, fill=None, stroke=None, sw=3, slab=GRAY, slab_w=None, slabs='tl br',
-            photo_key=None, align='xMidYMid', live=None, inner=''):
-    """Cut-corner container: rectangle with the top-left and bottom-right corners cut at 45 degrees (the X's angle
-    family), plus Base Gray slabs: each cut edge echoed outward as a parallelogram. Optional photo clipped to the shape.
-    Keep the live area equally inset from the edge (live = inset, drawn as a tinted guide when a colour is given)."""
+def _inset(P, d):
+    """Inset a convex clockwise polygon (screen coords) by d on every edge."""
+    n = len(P); L = []
+    for i in range(n):
+        (x1, y1), (x2, y2) = P[i], P[(i + 1) % n]
+        dx, dy = x2 - x1, y2 - y1; ln = (dx * dx + dy * dy) ** .5
+        nx, ny = -dy / ln, dx / ln                     # inward normal for clockwise order in y-down space
+        L.append(((x1 + nx * d, y1 + ny * d), (dx, dy)))
+    out = []
+    for i in range(n):
+        (p, r), (q, s_) = L[i - 1], L[i]
+        den = r[0] * s_[1] - r[1] * s_[0]
+        t = ((q[0] - p[0]) * s_[1] - (q[1] - p[1]) * s_[0]) / den
+        out.append((p[0] + r[0] * t, p[1] + r[1] * t))
+    return out
+
+CUT_RATIO = 1.19   # cut is steeper than 45 degrees: vertical run = 1.19 x horizontal run (NEXA Figma, ~ the emblem's stroke angle)
+
+def chamfer(name, l, t, w, h, c=None, fill=None, stroke=None, sw=3, photo_key=None, align='xMidYMid', live=None, inner='', **_):
+    """NEXA container (Figma "Visual identity"): a rectangle with the top-left and bottom-right corners cut.
+    c = horizontal run of the cut; the vertical run is c * CUT_RATIO. No extra shapes: the grey flaps in the Figma
+    were construction guides only. Optional photo clipped to the shape; live = (inset, colour) draws the live area,
+    equally inset from every edge including the cuts."""
     _clip_n[0] += 1; cid = f'ch{_clip_n[0]}'
     c = c if c is not None else round(min(w, h) * .16)
-    s_ = slab_w if slab_w is not None else round(c * .9)
-    P = [(c, 0), (w, 0), (w, h - c), (w - c, h), (0, h), (0, c)]
+    cy = c * CUT_RATIO
+    P = [(c, 0), (w, 0), (w, h - cy), (w - c, h), (0, h), (0, cy)]
     parts = []
-    if slab and 'tl' in slabs: parts.append(f'<polygon data-name="Slab" points="{_pts([(c - s_, 0), (c, 0), (0, c), (-s_, c)])}" {svgfill(slab)}/>')
-    if slab and 'br' in slabs: parts.append(f'<polygon data-name="Slab" points="{_pts([(w, h - c), (w + s_, h - c), (w - c + s_, h), (w - c, h)])}" {svgfill(slab)}/>')
     if fill: parts.append(f'<polygon data-name="Fill" points="{_pts(P)}" {svgfill(fill)}/>')
     if photo_key:
         parts.append(f'<defs><clipPath id="{cid}"><polygon points="{_pts(P)}"/></clipPath></defs>'
                      f'<g clip-path="url(#{cid})"><image data-img="{photo_key}" x="0" y="0" width="{w}" height="{h}" preserveAspectRatio="{align} slice"/></g>')
     if live:
         d, col = live
-        Q = [(c + d * .41, d), (w - d, d), (w - d, h - c - d * .41), (w - c - d * .41, h - d), (d, h - d), (d, c + d * .41)]
-        parts.append(f'<polygon data-name="Live area" points="{_pts(Q)}" {svgfill(col)}/>')
+        parts.append(f'<polygon data-name="Live area" points="{_pts(_inset(P, d))}" {svgfill(col)}/>')
     if stroke: parts.append(f'<polygon data-name="Outline" points="{_pts(P)}" fill="none" stroke="{stroke}" stroke-width="{sw}" stroke-linejoin="miter"/>')
     svg = f'<svg data-name="Container" width="{w}" height="{h}" viewBox="0 0 {w} {h}">{"".join(parts)}</svg>'
     return box(name, l=l, t=t, w=w, h=h, cls='graphic' + (' xwin' if photo_key else ''), inner=svg + inner)

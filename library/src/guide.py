@@ -148,17 +148,16 @@ F.append(('found', artboard('fd-imagery', 'Foundations · Imagery', BW, BH, WHIT
 
 # containers (from the NEXA Figma "Visual identity" page)
 f8 = (board_intro('06', 'Containers', 'CUT CORNERS,\nCLEAR SPACE',
-                  'Content sits in rectangles with the top-left and bottom-right corners cut. Each cut is echoed outward by a '
-                  'Base Gray slab, and a pale X sits behind. Keep the live area equally inset from every edge.')
-      + watermark(560, l=700, t=150) + watermark(460, l=1180, t=560)
-      + chamfer('Container', 760, 330, 420, 420, c=90, stroke=BLACK, sw=3)
-      + chamfer('Container with live area', 1330, 150, 460, 620, c=110, stroke=BLACK, sw=3, live=(26, TINT),
-                inner=T('Live area text', 'The live area is\nequally inset from\nthe edge of the\ncontainer.', 'st', BLACK, 40, l=40, t=150, w=390))
-      + stack('Rules', [f'<div class="row" data-name="Rule" style="gap:14px;align-items:flex-start">{arrow(18, BLUE)}{text("Rule", r_, "body", BLACK, 17)}</div>'
-                        for r_ in ['Cut the top-left and bottom-right corners only, at 45°. Cut ≈ 16% of the short side.',
-                                   'Slab: the cut edge moved outward by about one cut width, in Base Gray.',
-                                   'Fill with a photo, Super Blue, white or the secondary tint. Outline in black on white.',
-                                   'X watermark in the secondary tint, oversized and cropped. Never behind small text.']],
+                  'Content sits in a rectangle with the top-left and bottom-right corners cut, echoing the angles of the X. '
+                  'Nothing is added outside the shape. Keep the live area equally inset from every edge, cuts included.')
+      + chamfer('Container', 760, 330, 420, 420, c=64, stroke=BLACK, sw=3)
+      + chamfer('Container with live area', 1330, 150, 460, 620, c=100, stroke=BLACK, sw=3, live=(26, '#FFD6E8'),
+                inner=T('Live area text', 'The live area\nshould be equally\ninset from the\nedge of the\nrectangle.', 'st', BLACK, 42, l=40, t=140, w=400))
+      + stack('Rules', [f'<div class="row" data-name="Rule" style="gap:14px;align-items:flex-start">{chev(18, BLUE)}{text("Rule", r_, "body", BLACK, 17)}</div>'
+                        for r_ in ['Cut only the top-left and bottom-right corners, at the same angle.',
+                                   'Cut ≈ 16% of the short side; vertical run ≈ 1.2 × horizontal run.',
+                                   'Fill with a photo, Super Blue, white or a light tint; outline in black on white.',
+                                   'No flaps, shadows or extra shapes around the container.']],
               l=BM, t=640, w=520, gap=14))
 F.append(('found', artboard('fd-containers', 'Foundations · Containers', BW, BH, WHITE, f8, 'Brand board', 'board')))
 
@@ -168,7 +167,7 @@ def study_col(i, key, name, acc, tint, note):
     post = (fill('Post', BLUE, l=0, t=0, w=cw, h=cw) + T('Label', 'INSIGHT', 'lbl', acc, 13, l=18, t=18)
             + T('Line', 'What’s\nnext.', 'st', WHITE, 30, l=18, t=70) + emblem(34, acc, r=16, b=16) + wordmark(92, GRAY, l=18, b=20))
     dark = (fill('Dark', BLACK, l=0, t=0, w=cw, h=110) + T('Number', '15M+', 'num', WHITE, 52, l=16, t=20) + T('Caption', 'DEVICES DEPLOYED', 'lbl', acc, 11, l=18, t=80))
-    light = (fill('Tint', tint, l=0, t=0, w=cw, h=150) + chamfer('Chip', 18, 20, 120, 60, c=16, fill=BLUE, slab=GRAY, slab_w=14)
+    light = (fill('Tint', tint, l=0, t=0, w=cw, h=150) + chamfer('Chip', 18, 20, 120, 60, c=16, fill=BLUE)
              + T('Tint hex', tint.upper(), 'small', BLACK, 13, l=18, t=110))
     return box(f'{name} study', l=x, t=150, w=cw, h=800, cls='group', inner=
                T('Name', name.upper(), 'lbl', BLUE if key != 'lavender' else BLUE, 15, l=0, t=-40)

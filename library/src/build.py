@@ -46,10 +46,9 @@ for view, mod in (('library', TP), ('guide', GD)):
             f'<div class="sec-body"><div class="sec-num">{num}</div><div><h2>{esc(title)}</h2><p>{esc(intro)}</p></div></div></header>'
             f'<h2 class="figma-title" data-name="{esc(title)} title">{esc(title)}</h2>'
             f'<div class="frames">{"".join(frames)}</div></section>')
-_hw, _hh, _hc, _hs = 480, 500, 88, 80
-HERO_ART = (f'<svg viewBox="0 0 {_hw} {_hh}"><defs><clipPath id="heroclip"><polygon points="{_hc},0 {_hw},0 {_hw},{_hh-_hc} {_hw-_hc},{_hh} 0,{_hh} 0,{_hc}"/></clipPath></defs>'
-            f'<polygon points="{_hc-_hs},0 {_hc},0 0,{_hc} {-_hs},{_hc}" fill="#C9C7C9"/>'
-            f'<polygon points="{_hw},{_hh-_hc} {_hw+_hs},{_hh-_hc} {_hw-_hc+_hs},{_hh} {_hw-_hc},{_hh}" fill="#C9C7C9"/>'
+_hw, _hh, _hc = 480, 500, 88
+_hcy = round(_hc * CUT_RATIO)
+HERO_ART = (f'<svg viewBox="0 0 {_hw} {_hh}"><defs><clipPath id="heroclip"><polygon points="{_hc},0 {_hw},0 {_hw},{_hh-_hcy} {_hw-_hc},{_hh} 0,{_hh} 0,{_hcy}"/></clipPath></defs>'
             f'<image data-ui-img="ph-crew" width="{_hw}" height="{_hh}" preserveAspectRatio="xMidYMid slice" clip-path="url(#heroclip)"/></svg>')
 ALL_META = [(s_, t_) for s_, t_, _ in TP.SECTION_META + GD.SECTION_META]
 N_LIB, N_GUIDE = len(TP.F), len(GD.F)
@@ -140,7 +139,7 @@ body[data-view=library]:not(.figma) [data-view=guide],body[data-view=guide]:not(
 .hero p{font-size:16px;line-height:1.55;margin:0 0 32px;max-width:600px;color:#222}
 .hero-art{position:relative;padding:0 56px}.hero-art svg{display:block;width:100%;height:auto;overflow:visible}
 .set-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
-.set-tile{display:flex;flex-direction:column;gap:6px;padding:16px 16px 18px;background:var(--tint);color:#000;text-decoration:none;transition:background .15s,color .15s;clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.set-tile{display:flex;flex-direction:column;gap:6px;padding:16px 16px 18px;background:var(--tint);color:#000;text-decoration:none;transition:background .15s,color .15s;clip-path:polygon(14px 0,100% 0,100% calc(100% - 17px),calc(100% - 14px) 100%,0 100%,0 17px)}
 .set-tile:hover{background:var(--blue);color:#fff}
 .set-tile:hover i,.set-tile:hover em{color:#fff}
 .guide-head{margin:0 -56px 56px;padding:56px;background:#000;color:#fff;position:relative;overflow:hidden}
@@ -264,7 +263,7 @@ RULES = f"""
     <div class="sample">What’s next</div><div class="sample2">Roboto for sub-headers and body.</div>
     <dl class="kv"><dt>Headline</dt><dd>N27 Regular, UPPERCASE. Now: {HEAD_NAME}.</dd><dt>Statement</dt><dd>Roboto Bold, sentence case</dd><dt>Sub-heads</dt><dd>Roboto Regular / Bold</dd><dt>Scale</dt><dd>1.5× per level (perfect fifth)</dd></dl></div>
   <div class="rule"><h4>Secondary colour (experiment)</h4><p>Electric Azure, sampled from NEXA’s own backgrounds and MWC visuals, is the default. Switch it live in the top bar to compare with the brandbook turquoise.</p></div>
-  <div class="rule"><h4>Containers</h4><dl class="kv"><dt>Cut</dt><dd>Top-left + bottom-right, 45°, ≈16% of short side</dd><dt>Slab</dt><dd>Cut edge echoed outward in Base Gray</dd><dt>Live area</dt><dd>Equally inset from every edge</dd></dl></div>
+  <div class="rule"><h4>Containers</h4><dl class="kv"><dt>Shape</dt><dd>Rectangle, top-left + bottom-right corners cut</dd><dt>Cut</dt><dd>≈16% of the short side, slightly steeper than 45°</dd><dt>Live area</dt><dd>Equally inset from every edge</dd></dl></div>
   <div class="rule"><h4>Logo</h4>
     <dl class="kv"><dt>Place</dt><dd>Wordmark bottom-left, emblem top-right</dd><dt>Space</dt><dd>X height on every side</dd><dt>Min</dt><dd>Wordmark 200 px · emblem 50 px</dd></dl></div>
   <div class="rule"><h4>Never</h4><ul>

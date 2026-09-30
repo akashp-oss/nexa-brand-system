@@ -193,7 +193,7 @@ post('sq-event', 'Event · Booth', MIDNIGHT,
 post('sq-poll', 'Poll / question', WHITE,
      up('Kicker', 'QUICK POLL', BLUE, 24, l=M, t=M)
      + hl('Headline', 'WHAT’S NEXT\nFOR YOUR FLEET?', BLUE, 84, l=M, t=140)
-     + ''.join(chamfer(f'Option {k}', M, 380 + i * 112, 936, 88, c=24, fill=TINT, slab=None, inner=
+     + ''.join(chamfer(f'Option {k}', M, 380 + i * 112, 936, 88, c=24, fill=TINT, inner=
                        T('Letter', k, 'hl', BLUE, 30, l=40, t=27) + T('Option', o, 'lt', BLACK, 32, l=96, t=24))
                for i, (k, o) in enumerate(zip('ABCD', ['Rugged handhelds', 'Custom tablets', 'Wearables', 'IoT gateways'])))
      + wordmark(210, BLUE, l=M, b=M) + body('Vote in the comments', BLACK, 22, r=M, b=78))
