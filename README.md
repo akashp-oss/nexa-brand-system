@@ -24,7 +24,7 @@ Download the HTML file and open it in Chrome or Edge. It is self-contained: font
 - **Guides:** shows margins and the story safe zones.
 - **Edit:** click any text to change it; double-click an image (including the X window) to replace it. **Save file** keeps a copy with your edits.
 - **Copy SVG:** hover an asset, click **Copy SVG**, then press Ctrl/⌘ + V in Figma. Text stays editable (Saira/Roboto, or N27 if installed), the logo stays vector.
-- **Figma import view:** true size with no labels; pick a set and run an HTML-to-Figma plugin such as html.to.design. Link straight to a set with `?figma=social`, `?figma=slides` and so on.
+- **Figma import view:** true size with no labels; pick a set and run an HTML-to-Figma plugin such as html.to.design. Link straight to a set with `?figma=square`, `?figma=stories`, `?figma=slides` and so on.
 
 ## Build
 
