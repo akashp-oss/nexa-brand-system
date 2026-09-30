@@ -1,0 +1,2 @@
+Pillow>=10.0    # photo grading (brand/imagery/grade.py)
+pymupdf>=1.24   # logo extraction from the brandbook (brand/logo/extract_logo.py)

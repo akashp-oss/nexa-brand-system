@@ -1,0 +1,12 @@
+# Netlify site: nexa-brand-asset
+# Publishes only the finished library, never the repo root
+# (reference/ holds the client brand guidelines PDF).
+# The library HTML is committed pre-built, so the "build" just copies it.
+[build]
+  publish = "public"
+  command = "rm -rf public && mkdir -p public && cp library/dist/NEXA_Brand_Asset_Library.html public/index.html"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
