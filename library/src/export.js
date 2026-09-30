@@ -36,10 +36,12 @@
 
   /* inline <svg> re-expressed as a transformed group (Figma keeps it as vectors) */
   function svgInner(el) {
-    const color = hex(getComputedStyle(el).color) || '#000000';
+    /* resolve currentColor per element (accent colours are CSS variables routed through `color`) */
+    const cl = el.cloneNode(true), src = [el, ...el.querySelectorAll('*')], dst = [cl, ...cl.querySelectorAll('*')];
+    src.forEach((s, i) => { const d = dst[i]; ['fill', 'stroke'].forEach(a => { if (s.getAttribute(a) === 'currentColor') d.setAttribute(a, hex(getComputedStyle(s).color) || '#000000'); });
+      if (d.getAttribute('style') && /color:/.test(d.getAttribute('style'))) d.removeAttribute('style'); });
     const ser = new XMLSerializer();
-    return [...el.childNodes].map(n => ser.serializeToString(n)).join('')
-      .replace(/ xmlns="http:\/\/www\.w3\.org\/2000\/svg"/g, '').replace(/currentColor/g, color);
+    return [...cl.childNodes].map(n => ser.serializeToString(n)).join('').replace(/ xmlns="http:\/\/www\.w3\.org\/2000\/svg"/g, '');
   }
   function svgAttrs(el) {
     const color = hex(getComputedStyle(el).color) || '#000000';

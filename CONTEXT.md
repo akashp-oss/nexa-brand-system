@@ -40,15 +40,30 @@ Roboto (Apache 2.0) is the brand's own second face. Both are embedded in the HTM
 5. **Forward arrow** from the E, used as bullet and CTA marker.
 6. **Layout:** emblem top-right, wordmark bottom-left (colour variation page, p.15).
 
+## 3b. Round 2 direction (client feedback)
+
+- Library opens on assets; brandbook boards moved to a separate **Brand guidelines** view.
+- **Secondary colour** is an experiment, switchable live. Recommendation: **Periwinkle #A6A8FF** (tint #ECECFC), a
+  softer member of the Super Blue family that matches the pale X in the NEXA Figma. Alternatives: Bright Turquoise
+  (brandbook), Ice Mint #9FE8DC, Signal Coral #FF7A5C, Base Gray. Defined in `ACCENTS` (`gen.py`).
+- **Photography in natural colour.** The Super Blue grade is kept only for the brand-light split post.
+- **Containers** from the NEXA Figma "Visual identity" page: top-left and bottom-right corners cut at 45°, Base Gray
+  slabs echoing each cut outward, pale X watermark, live area equally inset (`chamfer()`, `watermark()`).
+- **Statements** in Roboto Bold, sentence case (as in the Figma), alongside uppercase N27 headlines.
+- Copy uses public NEXA facts (nexamobility.com, press): formerly Social Mobile (rebrand 2025), founded 2011,
+  15M+ devices deployed, designed in the USA, verticals: healthcare, retail, hospitality, transportation & logistics,
+  public safety, defense. Sonim is a NEXA company.
+
 ## 4. Imagery
 
-- **Super Blue grade** (`brand/imagery/grade.py`): photos mapped Space Black → Super Blue → pale blue, matching the in-situ pages.
+- **Natural colour** by default. **Super Blue grade** (`brand/imagery/grade.py`) only for brand-light split layouts (`phb-*`).
 - **Brand light** (`brand/imagery/textures.html`): generated fibre burst, light trails, neon tunnel, ribbon X, data wave and horizon grid. No licence needed.
 - **Placeholders:** the `ph-*` photos are reused from the Sonim system (mostly Pexels; `ph-clinician` comes from Sonim's site collage and its source is unknown). Replace them all with licensed NEXA photography before publishing externally.
 
-## 5. Asset sets (v1)
+## 5. Asset sets (v2)
 
-Foundations (7 boards) · Social posts (6) · Stories (2) · LinkedIn & landscape (2) · Presentation (5) · Web & email (3) · Stationery (3).
+Library: Square posts (17) · Carousels & portrait (6) · Stories (4) · LinkedIn & X (6) · Presentation (5) · Web & email (3) · Stationery (3).
+Brand guidelines: 9 boards (adds Containers and Secondary colour study).
 
 ## 6. Open items
 
@@ -56,4 +71,4 @@ Foundations (7 boards) · Social posts (6) · Stories (2) · LinkedIn & landscap
 - Official logo artwork from NEXA. The SVGs here are traced from the brandbook's vectors, so they are exact, but confirm with the source files.
 - Real NEXA photography and industry list (the in-situ pages show Health, Retail and Defense).
 - Stats on the stats slide are placeholders: replace them with sourced figures.
-- Netlify site `nexa-brand-asset` still has to be created: connect this repo in Netlify, or run `make deploy` with a token.
+- Waiting on the client's folders (fonts, graphic-use guidelines, asset inspiration) and an export of the Figma social page (figma.com is not reachable from the build environment).

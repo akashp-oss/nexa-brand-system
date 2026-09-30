@@ -10,7 +10,7 @@ and copied into Figma.
 
 | What | File |
 |---|---|
-| Brand asset library: 28 assets in 7 sets | [`library/dist/NEXA_Brand_Asset_Library.html`](library/dist/NEXA_Brand_Asset_Library.html) |
+| Brand asset library: 44 assets in 7 sets, plus a Brand guidelines view (9 boards) | [`library/dist/NEXA_Brand_Asset_Library.html`](library/dist/NEXA_Brand_Asset_Library.html) |
 | Logo artwork (SVG, 5 colours) | [`brand/logo/`](brand/logo/) |
 | Brand guidelines (source) | [`reference/NEXA_Brand_Guidelines_2024_v1.0.pdf`](reference/) |
 
@@ -18,6 +18,8 @@ Download the HTML file and open it in Chrome or Edge. It is self-contained: font
 
 ## Using the library
 
+- **Asset library / Brand guidelines:** the library opens on the assets; the brandbook boards live behind **Brand guidelines** (or `?view=guide`).
+- **Secondary:** switch the secondary colour live (Periwinkle, Bright Turquoise, Ice Mint, Signal Coral, Base Gray). It recolours every asset and Copy SVG exports the chosen colour.
 - **Zoom:** Fit, 25%, 50% or 100%.
 - **Guides:** shows margins and the story safe zones.
 - **Edit:** click any text to change it; double-click an image (including the X window) to replace it. **Save file** keeps a copy with your edits.
@@ -48,7 +50,7 @@ The site is called **nexa-brand-asset**. `netlify.toml` publishes only a `public
 ## Structure
 
 ```
-brand/       logo (traced from the brandbook), fonts (open-licence stand-ins), imagery tools
-library/     asset library: src/ (generator, templates, images, app JS) → dist/
+brand/       logo (traced from the brandbook), fonts (Saira/Roboto; N27 files dropped here are embedded automatically), imagery tools
+library/     asset library: src/ (gen.py helpers, templates.py assets, guide.py guideline boards, images, JS) → dist/
 reference/   NEXA Brand Guidelines v1.0 (client document; keep the repo private)
 ```

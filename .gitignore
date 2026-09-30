@@ -4,10 +4,7 @@ public/
 *_edited*.html
 __pycache__/
 node_modules
-# never commit licensed fonts (N27). Saira and Roboto in brand/fonts are open-licence (OFL / Apache 2.0)
-N27*
-*.otf
-*.ttf
+# Saira and Roboto in brand/fonts are open-licence (OFL / Apache 2.0); N27 is licensed, check web embedding before publishing
 .DS_Store
 Thumbs.db
 ~$*

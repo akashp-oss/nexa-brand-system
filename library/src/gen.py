@@ -8,6 +8,15 @@ ROOT = Path(__file__).resolve().parents[2]          # repo root
 # ---------------------------------------------------------------- brand palette (brandbook p.14)
 BLUE, GRAY, TURQ, PINK, PURPLE, BLACK = '#1F1FCC', '#C9C7C9', '#36FFE8', '#FF5FEB', '#2D0685', '#000000'
 WHITE = '#FFFFFF'
+# Secondary / accent colour is a live CSS variable so the library can compare options (see ACCENTS).
+ACC, TINT = 'var(--acc)', 'var(--tint)'
+ACCENTS = [  # key, name, accent (marks and labels on blue/black), tint (light grounds, X watermark), note
+    ('lavender', 'Periwinkle', '#A6A8FF', '#ECECFC', 'Recommended. Stays in the Super Blue family: calm, premium, legible on blue and black.'),
+    ('turquoise', 'Bright Turquoise', '#36FFE8', '#E3FFFC', 'Brandbook tertiary. Maximum energy; neon, so use in small doses.'),
+    ('mint', 'Ice Mint', '#9FE8DC', '#E8F7F4', 'Turquoise with the neon taken out. Keeps the link to the brandbook.'),
+    ('coral', 'Signal Coral', '#FF7A5C', '#FFEDE8', 'Warm complement to Super Blue. Most contrast, least corporate.'),
+    ('stone', 'Base Gray', '#C9C7C9', '#F1F0F1', 'The brandbook secondary on its own. Quiet and very safe.'),
+]
 PALETTE = [  # name, hex, rgb, cmyk, pantone, role
     ('Super Blue', BLUE, '31 31 204', '88 85 0 0', '2736 C', 'Primary'),
     ('Base Gray', GRAY, '201 199 201', '21 18 16 0', 'Cool Gray 3 U', 'Secondary'),
@@ -71,18 +80,22 @@ def photo(name, key, l=0, t=0, w=100, h=100, pos='50% 50%', r=None, b=None):
             f'style="{st({"left": px(l) if l is not None else None, "top": px(t) if t is not None else None, "right": px(r) if r is not None else None, "bottom": px(b) if b is not None else None, "width": px(w), "height": px(h), "object-position": pos})}">')
 
 # ---------------------------------------------------------------- logo
+def svgfill(color):
+    """SVG fill attribute + style: CSS variables can't live in presentation attributes, so route them through color."""
+    return ('fill="currentColor" style="color:%s"' % color) if str(color).startswith('var(') else f'fill="{color}"'
+
 def _paths(d): return ''.join(f'<path d="{p}"/>' for p in d)
 
 def wordmark(w, color, l=None, t=None, r=None, b=None, name='NEXA wordmark', tm=True):
     """Primary wordmark. Brandbook: never under 200 px wide on screen; clear space = height of the X on every side."""
     h = round(w * WM['h'] / WM['w'], 1)
-    svg = f'<svg data-name="Wordmark" width="{w}" height="{h}" viewBox="0 0 {WM["w"]} {WM["h"]}" fill="{color}">{_paths(WM["d"] if tm else WM["d"][:3])}</svg>'
+    svg = f'<svg data-name="Wordmark" width="{w}" height="{h}" viewBox="0 0 {WM["w"]} {WM["h"]}" {svgfill(color)}>{_paths(WM["d"] if tm else WM["d"][:3])}</svg>'
     return box(name, l=l, t=t, r=r, b=b, w=w, h=h, cls='logo', inner=svg)
 
 def wordmark_tagline(w, color, l=None, t=None, r=None, b=None, name='NEXA wordmark + tagline'):
     """Wordmark with 'Next Generation Enterprise' tagline (brandbook p.7), tagline set in Roboto Medium, centred."""
     h = round(w * WM['h'] / WM['w'], 1); ts = round(w * 0.074, 1)
-    inner = (f'<svg data-name="Wordmark" width="{w}" height="{h}" viewBox="0 0 {WM["w"]} {WM["h"]}" fill="{color}">{_paths(WM["d"])}</svg>'
+    inner = (f'<svg data-name="Wordmark" width="{w}" height="{h}" viewBox="0 0 {WM["w"]} {WM["h"]}" {svgfill(color)}>{_paths(WM["d"])}</svg>'
              + text('Tagline', 'NEXT GENERATION ENTERPRISE', 'tagline', color, ts, {'margin-top': px(round(h * 0.28)), 'width': px(round(w * 0.95)), 'text-align': 'center'}))
     return box(name, l=l, t=t, r=r, b=b, w=w, cls='logo stack', style={'align-items': 'flex-start'}, inner=inner)
 
@@ -90,8 +103,8 @@ def emblem(w, color, l=None, t=None, r=None, b=None, name='NEXA emblem', color2=
     """The X emblem: two chevrons meeting. color2 colours the left chevron (e.g. the two-tone construction view)."""
     h = round(w * EM['h'] / EM['w'], 1)
     d0, d1 = EM['d'][0], EM['d'][1]
-    inner = f'<path d="{d0}"/>' + (f'<path d="{d1}" fill="{color2}"/>' if color2 else f'<path d="{d1}"/>')
-    svg = f'<svg data-name="Emblem" width="{w}" height="{h}" viewBox="0 0 {EM["w"]} {EM["h"]}" fill="{color}">{inner}</svg>'
+    inner = f'<path d="{d0}"/>' + (f'<path d="{d1}" {svgfill(color2)}/>' if color2 else f'<path d="{d1}"/>')
+    svg = f'<svg data-name="Emblem" width="{w}" height="{h}" viewBox="0 0 {EM["w"]} {EM["h"]}" {svgfill(color)}>{inner}</svg>'
     return box(name, l=l, t=t, r=r, b=b, w=w, h=h, cls='logo', inner=svg)
 
 def chevron(h, color, side, l=None, t=None, r=None, b=None, name=None):
@@ -99,7 +112,7 @@ def chevron(h, color, side, l=None, t=None, r=None, b=None, name=None):
     Brandbook p.5: the brackets '><' hold images and focal points - the convergence of two worlds."""
     w = round(h * EM_HALF / EM['h'], 1)
     d, vx = (EM['d'][1], 0) if side == 'open' else (EM['d'][0], EM_HALF)
-    svg = f'<svg data-name="Chevron" width="{w}" height="{h}" viewBox="{vx} 0 {EM_HALF} {EM["h"]}" fill="{color}"><path d="{d}"/></svg>'
+    svg = f'<svg data-name="Chevron" width="{w}" height="{h}" viewBox="{vx} 0 {EM_HALF} {EM["h"]}" {svgfill(color)}><path d="{d}"/></svg>'
     return box(name or ('Bracket >' if side == 'open' else 'Bracket <'), l=l, t=t, r=r, b=b, w=w, h=h, cls='graphic', inner=svg)
 
 _clip_n = [0]
@@ -114,13 +127,13 @@ def xwindow(name, key, l, t, w, align='xMidYMid', zoom=1.0):
            f'<g clip-path="url(#{cid})"><image data-img="{key}" x="{ix:.1f}" y="{iy:.1f}" width="{iw:.1f}" height="{ih:.1f}" preserveAspectRatio="{align} slice"/></g></svg>')
     return box(name, l=l, t=t, w=w, h=h, cls='graphic xwin', inner=svg)
 
-def lockup(industry, size, color, accent=TURQ, l=None, t=None, r=None, b=None, name=None, gap=None):
+def lockup(industry, size, color, accent=ACC, l=None, t=None, r=None, b=None, name=None, gap=None):
     """'INDUSTRY  X  MOBILITY' (brandbook in-situ pages): Roboto uppercase either side of the emblem."""
     g = gap if gap is not None else round(size * 0.9)
     ew = round(size * 1.6)
     inner = (text('Industry', industry.upper(), 'lock', color, size)
              + f'<div class="logo" data-name="Emblem" style="width:{ew}px;height:{round(ew * EM["h"] / EM["w"], 1)}px;flex:none">'
-             + f'<svg width="{ew}" height="{round(ew * EM["h"] / EM["w"], 1)}" viewBox="0 0 {EM["w"]} {EM["h"]}" fill="{accent}">{_paths(EM["d"])}</svg></div>'
+             + f'<svg width="{ew}" height="{round(ew * EM["h"] / EM["w"], 1)}" viewBox="0 0 {EM["w"]} {EM["h"]}" {svgfill(accent)}>{_paths(EM["d"])}</svg></div>'
              + text('Mobility', 'MOBILITY', 'lock', color, size))
     return box(name or f'{industry} x Mobility lockup', l=l, t=t, r=r, b=b, cls='row', style={'gap': px(g), 'align-items': 'center'}, inner=inner)
 
@@ -134,7 +147,7 @@ def rail(w, color, items, l, t, size=13, name='Meta rail'):
 def arrow(size, color, name='Arrow'):
     """The E's forward arrow, used as a bullet / CTA marker."""
     return (f'<div class="graphic" data-name="{name}" style="width:{size}px;height:{size}px;flex:none">'
-            f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="{color}"><path d="M4 3h9l7 9-7 9H4l7-9z"/></svg></div>')
+            f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" {svgfill(color)}><path d="M4 3h9l7 9-7 9H4l7-9z"/></svg></div>')
 
 def artboard(aid, name, w, h, bg, inner, use, fmt, em=None):
     style = f'width:{w}px;height:{h}px;background:{bg}' + (f';--em:{em}' if em else '')
@@ -142,3 +155,35 @@ def artboard(aid, name, w, h, bg, inner, use, fmt, em=None):
             f'<figcaption class="frame-meta"><b>{esc(name)}</b><span>{w} × {h} px · {esc(use)}</span></figcaption>'
             f'<div class="ab-wrap" style="width:{w}px;height:{h}px"><div class="ab" data-name="{esc(name)} · {w}×{h}" style="{style}">'
             f'{inner}</div></div></figure>')
+
+
+# ---------------------------------------------------------------- container system (NEXA Figma "visual identity")
+def _pts(pts): return ' '.join(f'{x:.1f},{y:.1f}' for x, y in pts)
+
+def chamfer(name, l, t, w, h, c=None, fill=None, stroke=None, sw=3, slab=GRAY, slab_w=None, slabs='tl br',
+            photo_key=None, align='xMidYMid', live=None, inner=''):
+    """Cut-corner container: rectangle with the top-left and bottom-right corners cut at 45 degrees (the X's angle
+    family), plus Base Gray slabs: each cut edge echoed outward as a parallelogram. Optional photo clipped to the shape.
+    Keep the live area equally inset from the edge (live = inset, drawn as a tinted guide when a colour is given)."""
+    _clip_n[0] += 1; cid = f'ch{_clip_n[0]}'
+    c = c if c is not None else round(min(w, h) * .16)
+    s_ = slab_w if slab_w is not None else round(c * .9)
+    P = [(c, 0), (w, 0), (w, h - c), (w - c, h), (0, h), (0, c)]
+    parts = []
+    if slab and 'tl' in slabs: parts.append(f'<polygon data-name="Slab" points="{_pts([(c - s_, 0), (c, 0), (0, c), (-s_, c)])}" {svgfill(slab)}/>')
+    if slab and 'br' in slabs: parts.append(f'<polygon data-name="Slab" points="{_pts([(w, h - c), (w + s_, h - c), (w - c + s_, h), (w - c, h)])}" {svgfill(slab)}/>')
+    if fill: parts.append(f'<polygon data-name="Fill" points="{_pts(P)}" {svgfill(fill)}/>')
+    if photo_key:
+        parts.append(f'<defs><clipPath id="{cid}"><polygon points="{_pts(P)}"/></clipPath></defs>'
+                     f'<g clip-path="url(#{cid})"><image data-img="{photo_key}" x="0" y="0" width="{w}" height="{h}" preserveAspectRatio="{align} slice"/></g>')
+    if live:
+        d, col = live
+        Q = [(c + d * .41, d), (w - d, d), (w - d, h - c - d * .41), (w - c - d * .41, h - d), (d, h - d), (d, c + d * .41)]
+        parts.append(f'<polygon data-name="Live area" points="{_pts(Q)}" {svgfill(col)}/>')
+    if stroke: parts.append(f'<polygon data-name="Outline" points="{_pts(P)}" fill="none" stroke="{stroke}" stroke-width="{sw}" stroke-linejoin="miter"/>')
+    svg = f'<svg data-name="Container" width="{w}" height="{h}" viewBox="0 0 {w} {h}">{"".join(parts)}</svg>'
+    return box(name, l=l, t=t, w=w, h=h, cls='graphic' + (' xwin' if photo_key else ''), inner=svg + inner)
+
+def watermark(w, l=None, t=None, r=None, b=None, color=TINT, name='X watermark'):
+    """Oversized pale emblem behind content (NEXA Figma). Crop it off the edge; never behind small text."""
+    return emblem(w, color, l=l, t=t, r=r, b=b, name=name)
