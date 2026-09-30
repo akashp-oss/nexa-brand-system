@@ -12,8 +12,9 @@ imagery:          ## (textures now come from Asset Inspiration; generated set ke
 library:          ## library/dist/NEXA_Brand_Asset_Library.html
 	python3 library/src/build.py
 
-qa: library       ## screenshots + overflow/error checks into .qa/
+qa: library       ## screenshots + overflow/error checks into .qa/, then layout checks (overlaps, margins, logo size)
 	node library/src/shots.js
+	node library/src/qa.js
 
 public: library   ## the folder Netlify publishes
 	rm -rf public && mkdir -p public && cp library/dist/NEXA_Brand_Asset_Library.html public/index.html

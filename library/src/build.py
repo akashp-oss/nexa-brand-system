@@ -6,6 +6,8 @@ sys.path.insert(0, str(HERE))
 from gen import *
 import templates as TP
 import guide as GD
+import deck as DK
+import docs as DC
 import re
 
 def b64(p): return base64.b64encode(open(p, 'rb').read()).decode()
@@ -33,10 +35,12 @@ HEAD_NAME = 'N27' if N27 else 'Saira (N27 stand-in)'
 MARGINS = {'board': 64, 'post': 72, 'story': 72, 'land': 48, 'slide': 64, 'web': 64, 'print': 64, 'doc': 64}
 
 sections_html, nav, tiles = [], [], []
-for view, mod in (('library', TP), ('guide', GD)):
+_n = 0
+for view, mod in (('library', TP), ('library', DK), ('library', DC), ('guide', GD)):
     for i, (sid, title, intro) in enumerate(mod.SECTION_META):
         frames = [h for s_, h in mod.F if s_ == sid]
-        num = f'{i + 1:02d}' if view == 'library' else 'BG'
+        if view == 'library': _n += 1
+        num = f'{_n:02d}' if view == 'library' else 'BG'
         nav.append(f'<a class="nav-item" href="#sec-{sid}" data-sec="{sid}" data-view="{view}"><i>{num}</i><span>{esc(title)}</span><em>{len(frames)}</em></a>')
         if view == 'library':
             tiles.append(f'<a class="set-tile" href="#sec-{sid}"><i>{num}</i><b>{esc(title)}</b><em>{len(frames)} assets</em></a>')
@@ -50,8 +54,8 @@ _hw, _hh, _hc = 480, 500, 88
 _hcy = round(_hc * CUT_RATIO)
 HERO_ART = (f'<svg viewBox="0 0 {_hw} {_hh}"><defs><clipPath id="heroclip"><polygon points="{_hc},0 {_hw},0 {_hw},{_hh-_hcy} {_hw-_hc},{_hh} 0,{_hh} 0,{_hcy}"/></clipPath></defs>'
             f'<image data-ui-img="ph-crew" width="{_hw}" height="{_hh}" preserveAspectRatio="xMidYMid slice" clip-path="url(#heroclip)"/></svg>')
-ALL_META = [(s_, t_) for s_, t_, _ in TP.SECTION_META + GD.SECTION_META]
-N_LIB, N_GUIDE = len(TP.F), len(GD.F)
+ALL_META = [(s_, t_) for s_, t_, _ in TP.SECTION_META + DK.SECTION_META + DC.SECTION_META + GD.SECTION_META]
+N_LIB, N_GUIDE = len(TP.F) + len(DK.F) + len(DC.F), len(GD.F)
 
 def paths(inner): return inner
 def svg_logo(inner, w, h, fill, cls=''):

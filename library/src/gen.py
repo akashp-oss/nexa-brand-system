@@ -232,8 +232,9 @@ ICONS = {  # 24px line icons in the one-pager style (1.6 stroke)
     'truck': '<path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7z"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
     'cart': '<path d="M3 4h2.5l2.2 11h10.6l2-8H7"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/>',
 }
-def icon(key, size, color, name=None):
-    return (f'<div class="graphic" data-name="{esc(name or key)} icon" style="width:{size}px;height:{size}px;flex:none">'
+def icon(key, size, color, name=None, l=None, t=None, r=None, b=None):
+    pos = ''.join(f'{k}:{px(v)};' for k, v in (('left', l), ('top', t), ('right', r), ('bottom', b)) if v is not None)
+    return (f'<div class="graphic{" abs" if pos else ""}" data-name="{esc(name or key)} icon" style="{pos}width:{size}px;height:{size}px;flex:none">'
             f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:{color}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">{ICONS[key]}</svg></div>')
 
 def stat(num, suffix, color, size, l=None, t=None, name='Stat'):
@@ -272,3 +273,31 @@ def slash(name, l, t, w, h, stroke=WHITE, sw=2, fill_key=None, skew=None):
                 f'<g clip-path="url(#{cid})"><image data-img="{fill_key}" x="0" y="0" width="{w}" height="{h}" preserveAspectRatio="xMidYMid slice"/></g>')
     if stroke: body += f'<polygon points="{P}" fill="none" stroke="{stroke}" stroke-width="{sw}"/>'
     return box(name, l=l, t=t, w=w, h=h, cls='graphic' + (' xwin' if fill_key else ''), inner=f'<svg data-name="Slash" width="{w}" height="{h}" viewBox="0 0 {w} {h}">{body}</svg>')
+
+ICONS.update({
+    'chip': '<rect x="6.5" y="6.5" width="11" height="11" rx="1"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 3.5v3M12 3.5v3M15 3.5v3M9 17.5v3M12 17.5v3M15 17.5v3M3.5 9h3M3.5 12h3M3.5 15h3M17.5 9h3M17.5 12h3M17.5 15h3"/>',
+    'factory': '<path d="M3 20.5V9l5 3.2V9l5 3.2V9l5 3.2V4.5h3v16z"/><path d="M7 16.5h2M12 16.5h2M17 16.5h1"/>',
+    'rocket': '<path d="M14.5 4.5c2.8-1.1 4.9-1 5-1 0 .1.1 2.2-1 5l-6.3 6.3-4-4z"/><path d="M8.2 10.8L5 10.5l-1.5 2.4 3.6 1M13.2 15.8l.3 3.2-2.4 1.5-1-3.6M6 18l-2 2.5M8 19.5l-1 1.5M4.5 16l-1.5 1"/><circle cx="15.8" cy="8.2" r="1.3"/>',
+    'globe': '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.2 3.6 8.5s-1.2 6.1-3.6 8.5c-2.4-2.4-3.6-5.2-3.6-8.5S9.6 5.9 12 3.5z"/>',
+    'lock': '<rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8 10.5V7.5a4 4 0 018 0v3M12 14.5v2.5"/>',
+    'users': '<circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.5c.6-3.3 3-5.2 6-5.2s5.4 1.9 6 5.2"/><circle cx="17" cy="9.5" r="2.4"/><path d="M16.5 14.4c2.3.2 4 1.8 4.5 4.6"/>',
+    'check': '<circle cx="12" cy="12" r="8.5"/><path d="M8 12.3l2.7 2.7L16.2 9.5"/>',
+    'pin': '<path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0113 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+    'mail': '<rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/>',
+    'phone': '<path d="M6.5 3.5h3l1.5 4.5-2 1.5a11 11 0 005.5 5.5l1.5-2 4.5 1.5v3a2 2 0 01-2 2A16 16 0 014.5 5.5a2 2 0 012-2z"/>',
+})
+
+def vwordmark(length, color, l=None, t=None, r=None, b=None, name='NEXA wordmark (vertical)'):
+    """Wordmark rotated to read bottom-to-top, as on the right-hand rail of NEXA's decks."""
+    th = round(length * WM['h'] / WM['w'], 1)
+    svg = (f'<svg data-name="Wordmark" width="{th}" height="{length}" viewBox="0 0 {WM["h"]} {WM["w"]}" {svgfill(color)}>'
+           f'<g transform="translate(0 {WM["w"]}) rotate(-90)">{WM["inner"]}</g></svg>')
+    return box(name, l=l, t=t, r=r, b=b, w=th, h=length, cls='logo', inner=svg)
+
+def glass(name, l, t, w, h, c=None, inner='', solid=None, alpha=.07, line_a=.26):
+    """Frosted cut-corner card for dark grounds (NEXA strategy decks). solid = fill colour for the highlighted card."""
+    return chamfer(name, l, t, w, h, c=c if c is not None else round(min(w, h) * .09),
+                   fill=solid or f'rgba(255,255,255,{alpha})', stroke=None if solid else f'rgba(255,255,255,{line_a})', sw=1.5, inner=inner)
+
+CONFIDENTIAL = ('Confidential. Proprietary information that may not be used or disclosed outside of NEXA and its affiliates '
+                'except pursuant to a written agreement. Copyright © NEXA. All rights reserved.')

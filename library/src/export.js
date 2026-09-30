@@ -125,7 +125,8 @@
           const stops = [...gi.matchAll(/(rgba?\([^)]+\))\s*([\d.]+%)?/g)].map((m, i, a) => {
             const c = m[1].match(/[\d.]+/g).map(Number); const off = m[2] || (i / Math.max(1, a.length - 1) * 100 + '%');
             return `<stop offset="${off}" stop-color="${hex('rgb(' + c.slice(0, 3).join(',') + ')')}" stop-opacity="${c[3] ?? 1}"/>`; }).join('');
-          defs.push(`<linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">${stops}</linearGradient>`);
+          const up = /^linear-gradient\(0deg/.test(gi);   /* 180deg = top→bottom, 0deg = bottom→top */
+          defs.push(`<linearGradient id="${gid}" x1="0" y1="${up ? 1 : 0}" x2="0" y2="${up ? 0 : 1}">${stops}</linearGradient>`);
           out += `<rect id="${id(el)}" x="${N(r.x)}" y="${N(r.y)}" width="${N(r.w)}" height="${N(r.h)}" fill="url(#${gid})"/>`;
         }
         if (el.classList.contains('tx')) {

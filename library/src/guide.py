@@ -165,7 +165,7 @@ F.append(('found', artboard('fd-containers', 'Foundations · Containers', BW, BH
 def study_col(i, key, name, acc, tint, note):
     x, cw = 640 + i * 250, 232
     post = (fill('Post', BLUE, l=0, t=0, w=cw, h=cw) + T('Label', 'INSIGHT', 'lbl', acc, 13, l=18, t=18)
-            + T('Line', 'What’s\nnext.', 'st', WHITE, 30, l=18, t=70) + emblem(34, acc, r=16, b=16) + wordmark(92, GRAY, l=18, b=20))
+            + T('Line', 'What’s\nnext.', 'st', WHITE, 30, l=18, t=70) + emblem(34, acc, r=16, b=16) + wordmark(120, GRAY, l=18, b=20))
     dark = (fill('Dark', BLACK, l=0, t=0, w=cw, h=110) + T('Number', '15M+', 'num', WHITE, 52, l=16, t=20) + T('Caption', 'DEVICES DEPLOYED', 'lbl', acc, 11, l=18, t=80))
     light = (fill('Tint', tint, l=0, t=0, w=cw, h=150) + chamfer('Chip', 18, 20, 120, 60, c=16, fill=BLUE)
              + T('Tint hex', tint.upper(), 'small', BLACK, 13, l=18, t=110))

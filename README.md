@@ -10,7 +10,7 @@ and copied into Figma.
 
 | What | File |
 |---|---|
-| Brand asset library: 48 assets in 8 sets, plus a Brand guidelines view (9 boards) | [`library/dist/NEXA_Brand_Asset_Library.html`](library/dist/NEXA_Brand_Asset_Library.html) |
+| Brand asset library: 71 assets in 9 sets (social, LinkedIn, web, a 16-slide deck, case studies, one-pagers, stationery), plus a Brand guidelines view (9 boards) | [`library/dist/NEXA_Brand_Asset_Library.html`](library/dist/NEXA_Brand_Asset_Library.html) |
 | Official logo artwork (SVG, EPS, PNG, JPG) | [`NEXA_LogoSystem/`](NEXA_LogoSystem/) |
 | Fonts (N27, Roboto) | [`NEXA_Typography/`](NEXA_Typography/) |
 | Client references and inspiration | [`Asset Inspiration/`](Asset%20Inspiration/), [`reference/`](reference/) |
@@ -34,7 +34,7 @@ Requires Python 3.10+ (`pip install -r requirements.txt`), Node 18+ and Playwrig
 
 ```bash
 make library   # library/dist/NEXA_Brand_Asset_Library.html
-make qa        # screenshots and overflow/error checks into .qa/
+make qa        # screenshots into .qa/ plus layout checks (overlaps, margins, logo size)
 make logo      # rebuild logo.json from NEXA_LogoSystem
 make imagery   # re-render the generated brand-light textures
 make deploy    # publish to Netlify (needs NETLIFY_AUTH_TOKEN)
@@ -52,7 +52,7 @@ The site is called **nexa-brand-asset**. `netlify.toml` publishes only a `public
 ## Structure
 
 ```
-brand/       logo (traced from the brandbook), fonts (Saira/Roboto; N27 files dropped here are embedded automatically), imagery tools
-library/     asset library: src/ (gen.py helpers, templates.py assets, guide.py guideline boards, images, JS) → dist/
+brand/       logo.json + clean SVGs built from NEXA_LogoSystem, fallback fonts, imagery tools
+library/     asset library: src/ (gen.py helpers; templates.py social/web; deck.py slides; docs.py print; guide.py boards; qa.js) → dist/
 reference/   NEXA Brand Guidelines v1.0 (client document; keep the repo private)
 ```

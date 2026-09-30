@@ -48,7 +48,8 @@ def body(content, color, size, l=None, t=None, w=None, r=None, b=None, name='Bod
 def scrim(l, t, w, h, a=.38, color='0,0,0'):
     return fill('Scrim', f'rgba({color},{a})', l=l, t=t, w=w, h=h)
 def bg(key, w, h, pos='50% 50%', name='Background'):
-    return photo(name, key, 0, 0, w, h, pos)
+    veil = fill('Midnight veil', 'rgba(0,19,58,.3)', l=0, t=0, w=w, h=h) if 'aurora' in key else ''
+    return photo(name, key, 0, 0, w, h, pos) + veil
 def lockrow(w_mark, color, l, t, partner_h=None):
     """NEXA | partner lockup: wordmark, thin divider, partner logo slot."""
     ph = partner_h or round(w_mark * .3)
@@ -244,10 +245,12 @@ portrait('pt-onepager', 'Portrait · Healthcare feature', WHITE,
          fill('Top panel', BLUE, l=0, t=0, w=PW, h=820) + photo('Photo', 'ph-clinician', 560, 0, 520, 820, '72% 50%')
          + fill('Blend', 'rgba(31,31,204,.55)', l=560, t=0, w=520, h=820)
          + wordmark(210, WHITE, l=M, t=M)
-         + hl('Headline', 'ENTERPRISE\nMOBILITY FOR\nHEALTHCARE', WHITE, 84, l=M, t=190)
-         + lt('Sub', 'Advancing the patient experience with Android Enterprise solutions.', WHITE, 38, l=M, t=500, w=720)
-         + chev_list(['Custom devices for hospitals and providers', 'Remote or in-person patient experience', 'Lifecycle from manufacture to management'], BLUE, 30, M, 900, 900, cls='lt', ccolor=BLUE)
-         + T('URL', 'nexamobility.com/healthcare', 'n27', BLUE, 24, l=M, b=M), 'Instagram / LinkedIn portrait')
+         + hl('Headline', 'ENTERPRISE\nMOBILITY FOR\nHEALTHCARE', WHITE, 64, l=M, t=200)
+         + lt('Sub', 'Advancing the patient experience with Android Enterprise solutions.', WHITE, 34, l=M, t=460, w=460)
+         + chev_list(['Custom devices for hospitals and providers', 'Remote or in-person patient experience', 'Lifecycle from manufacture to management'], BLUE, 30, M, 870, 900, cls='lt', ccolor=BLUE)
+         + line('Rule', '#D6D6DC', M, 1070, PW - 2 * M, 1) + T('Stat lead', 'By 2027 up to', 'lt', BLACK, 26, l=M, t=1100)
+         + stat('60', '%', BLUE, 120, l=M, t=1140) + lt('Stat text', 'of patient interactions\nwill be virtual.', BLACK, 30, l=330, t=1170)
+         + wordmark(200, BLUE, r=M, b=M), 'Instagram / LinkedIn portrait')
 
 # ============================================================== STORIES 1080 x 1920 (safe: top 250, bottom 340)
 SW, SH = 1080, 1920
@@ -298,7 +301,7 @@ land('li-statement', 'LinkedIn · X of light', MIDNIGHT,
 land('li-stat', 'LinkedIn · Stat', MIDNIGHT,
      bg('tex-arcs', LW, LH, '50% 50%')
      + lt('Lead', 'By 2027 up to', WHITE, 30, l=LM, t=LM)
-     + stat('60', '%', WHITE, 230, l=LM - 8, t=100)
+     + stat('60', '%', WHITE, 210, l=LM - 8, t=112)
      + lt('Statement', 'of patient interactions\nwill be virtual.', WHITE, 38, l=LM, t=350)
      + wordmark(200, WHITE, l=LM, b=LM))
 land('li-hiring', 'LinkedIn · Hiring', WHITE,
@@ -320,85 +323,6 @@ land('li-banner', 'LinkedIn · Company banner', MIDNIGHT,
      + lt('Statement', 'Custom-built mobility\nsolutions for enterprise.', WHITE, 44, l=560, t=110)
      + T('URL', 'nexamobility.com', 'n27', WHITE, 20, l=560, t=250),
      w=1584, h=396, use='LinkedIn company cover (keep the left third clear for the logo)')
-
-# ============================================================== SALES COLLATERAL (US Letter)
-CW, CH = 816, 1056
-def coll(aid, name, inner, use):
-    F.append(('collateral', artboard(aid, name, CW, CH, WHITE, inner, use, 'doc')))
-
-coll('co-onepager', 'One-pager · Industry', (
-    fill('Hero', BLUE, l=0, t=0, w=CW, h=372) + photo('Photo', 'ph-clinician', 500, 0, 316, 372, '70% 50%')
-    + fill('Blend', 'rgba(31,31,204,.5)', l=500, t=0, w=316, h=372)
-    + wordmark(96, WHITE, l=44, t=36)
-    + hl('Headline', 'ENTERPRISE MOBILITY\nFOR HEALTHCARE', WHITE, 44, l=44, t=78)
-    + lt('Sub', 'Advancing the patient experience\nwith Android Enterprise solutions.', WHITE, 21, l=44, t=196)
-    + chev_list(['Custom, enterprise-grade devices for hospitals and providers', 'Improve the patient experience, remote or in-person', 'Streamline the device lifecycle end to end'], WHITE, 12, 44, 262, 420, gap=6)
-    + lt('Intro', 'Smartphones, tablets and wearables are changing healthcare: telehealth, remote patient monitoring, clinical trials. A custom mobility solution keeps those devices purpose-built, secure and available for up to five years.', BLACK, 12.5, l=52, t=400, w=470)
-    + T('Stat lead', 'By 2027 up to', 'small', BLACK, 11, l=600, t=404) + stat('60', '%', BLUE, 76, l=600, t=420) + T('Stat detail', 'of patient interactions\nwill be virtual.', 'small', BLACK, 11, l=600, t=500)
-    + line('Rule', '#BDBDBD', 44, 560, 728)
-    + hb('Section head', 'HEALTHCARE\nUSE CASES AND\nAPPLICATIONS', BLUE, 23, l=52, t=580)
-    + chev_list(HEALTH_USES[:5], BLACK, 11.5, 300, 584, 220, gap=4, ccolor=BLUE, cls='lt') + chev_list(HEALTH_USES[5:], BLACK, 11.5, 540, 584, 220, gap=4, ccolor=BLUE, cls='lt')
-    + line('Rule', '#BDBDBD', 44, 720, 728)
-    + ''.join(box(f'{t_} column', l=52 + i * 182, t=738, w=164, cls='stack', style={'gap': '6px'}, inner=
-                  icon(k, 26, BLUE, t_) + text('Title', t_.upper(), 'hb', BLUE, 14) + text('Detail', d, 'lt', BLACK, 10.5))
-              for i, (k, t_, d) in enumerate(PILLARS))
-    + line('Rule', '#BDBDBD', 44, 900, 728)
-    + wordmark(96, BLUE, l=44, t=918) + T('About', ABOUT, 'small', BLACK, 8.5, l=44, t=944, w=300)
-    + qr_dots('https://nexamobility.com/healthcare', 60, BLACK, l=470, t=918)
-    + T('Contact', 'Sales      sales@nexamobility.com\nWebsite  nexamobility.com\nSupport  support.nexamobility.com', 'small', BLUE, 9.5, l=560, t=920)
-    + T('Legal', '© 2026 NEXA. All rights reserved.', 'small', BLACK, 7.5, l=44, t=1020)), 'US Letter one-pager')
-
-coll('co-casestudy', 'Case study · One-pager', (
-    fill('Hero', BLUE, l=0, t=0, w=520, h=212) + photo('Photo', 'ph-clinician', 520, 0, 296, 212, '60% 50%')
-    + lockrow(80, WHITE, 32, 34) + up('Kicker', 'CASE STUDY', WHITE, 18, l=32, t=84)
-    + st('Title', 'Revolutionizing bedside care with the first\nGoogle-certified patient engagement solution', WHITE, 18.5, l=32, t=124, w=470)
-    + fill('Side column', '#F6F6F7', l=0, t=212, w=292, h=844)
-    + hb('Head', 'OVERVIEW', BLACK, 17, l=32, t=240) + lt('Text', 'Oneview Healthcare, with NEXA, developed the first 22" Google-certified all-in-one patient engagement solution.', BLACK, 11.5, l=32, t=270, w=236)
-    + hb('Head', 'KEY HIGHLIGHTS', BLACK, 17, l=32, t=400)
-    + ''.join(stat(n, sfx, BLUE, 40, l=32, t=436 + i * 66) + T('Detail', d, 'lt', BLACK, 10.5, l=112, t=440 + i * 66, w=160) for i, (n, sfx, d) in enumerate(CASE['stats']))
-    + hb('Head', 'PARTNERS', BLACK, 17, l=32, t=650) + partner_slot(100, 34, '#9A9A9A', l=32, t=682) + partner_slot(100, 34, '#9A9A9A', l=146, t=682)
-    + hb('Head', 'NEXA', BLACK, 17, l=32, t=750) + lt('About', ABOUT, BLACK, 11, l=32, t=778, w=236)
-    + T('Link', 'Visit nexamobility.com for more.', 'small', BLACK, 11, l=32, t=880)
-    + hb('Head', 'CHALLENGE', BLACK, 17, l=330, t=240) + lt('Text', CASE['challenge'], BLACK, 11.5, l=330, t=270, w=450)
-    + hb('Head', 'SOLUTION', BLACK, 17, l=330, t=360)
-    + ''.join(st('Point', a + ':', BLUE, 12.5, l=330, t=392 + i * 70) + lt('Detail', b_, BLACK, 11.5, l=330, t=412 + i * 70, w=450) for i, (a, b_) in enumerate(CASE['solution']))
-    + hb('Head', 'CONCLUSION', BLACK, 17, l=330, t=620)
-    + lt('Text', 'Oneview Healthcare and NEXA have redefined patient care and clinical workflows with a seamless, connected bedside experience.', BLACK, 11.5, l=330, t=650, w=200)
-    + chamfer('Product photo', 560, 640, 220, 200, c=36, photo_key='ph-dispatcher', align='xMidYMid')
-    + wordmark(96, BLUE, r=36, b=36)), 'US Letter case study')
-
-# ============================================================== PRESENTATION 1920 x 1080
-D, DH, DM = 1920, 1080, 80
-def slide(aid, name, bg_, inner, use):
-    F.append(('slides', artboard(aid, name, D, DH, bg_, inner, use, 'slide')))
-
-slide('sl-cover', 'Slide · Cover', MIDNIGHT,
-      bg('tex-xlight', D, DH, '85% 50%')
-      + wordmark(260, WHITE, l=DM, t=DM)
-      + hl('Headline', 'PRESENTATION\nTITLE GOES HERE', WHITE, 120, l=DM, t=360)
-      + lt('Sub', 'Subtitle or presenter name · Month 2026', WHITE, 36, l=DM, t=640), 'Title slide')
-slide('sl-section', 'Slide · Section divider', MIDNIGHT,
-      bg('tex-arcs', D, DH)
-      + T('Index', '02', 'hl', WHITE, 300, l=DM - 12, t=DM)
-      + hl('Headline', 'OUR PLATFORM', WHITE, 120, l=DM, t=820), 'Section divider')
-slide('sl-content', 'Slide · Content + image', WHITE,
-      up('Kicker', 'WHAT WE DO', BLUE, 30, l=DM, t=DM)
-      + hl('Headline', 'ONE PARTNER,\nEVERY DEVICE', BLACK, 96, l=DM, t=140)
-      + lt('Sub', 'From design to recycling, managed as one.', BLACK, 40, l=DM, t=380, w=820)
-      + chev_list([p[1] + ': ' + p[2] for p in PILLARS], BLACK, 28, DM, 500, 820, gap=22, ccolor=BLUE, cls='lt')
-      + chamfer('Photo container', 1020, 120, 820, 840, c=140, photo_key='ph-dispatcher', align='xMidYMid')
-      + wordmark(200, BLUE, l=DM, b=DM - 20), 'Content slide')
-slide('sl-stats', 'Slide · Key highlights', BLUE,
-      emblem(1200, VEIL, r=-300, t=-100, name='X watermark')
-      + up('Kicker', 'CASE STUDY · ONEVIEW HEALTHCARE', WHITE, 28, l=DM, t=DM)
-      + hb('Section head', 'KEY HIGHLIGHTS', WHITE, 80, l=DM, t=140)
-      + ''.join(box('Stat', l=DM + i * 600, t=420, w=540, cls='stack', style={'gap': '20px'}, inner=
-                    line('Rule', WHITE, 0, 0, 540) + stat(n, sfx, WHITE, 200).replace('class="abs ', 'class="') + text('Detail', d, 'lt', WHITE, 30))
-                for i, (n, sfx, d) in enumerate(CASE['stats']))
-      + wordmark(200, WHITE, l=DM, b=DM - 20), 'Data slide')
-slide('sl-close', 'Slide · Closing', BLACK,
-      wordmark(1100, BLUE, l=(D - 1100) // 2, t=(DH - round(1100 * WM['h'] / WM['w'])) // 2)
-      + T('URL', 'nexamobility.com', 'n27', GRAY, 28, l=DM, b=DM), 'End slide')
 
 # ============================================================== WEB & EMAIL
 def web(aid, name, w, h, bg_, inner, use):
@@ -427,34 +351,10 @@ web('wb-signature', 'Email · Signature', 600, 160, WHITE,
     + T('Title', 'Job Title', 'lt', BLACK, 15, l=132, t=56)
     + T('Contact', '+1 (000) 000-0000  ·  name@nexamobility.com\nnexamobility.com', 'n27', '#6F6F6F', 13, l=132, t=90), 'Email signature')
 
-# ============================================================== STATIONERY
-def pr(aid, name, w, h, bg_, inner, use, fmt='print'):
-    F.append(('print', artboard(aid, name, w, h, bg_, inner, use, fmt)))
-
-pr('pr-card-front', 'Business card · Front', 1050, 600, BLUE, wordmark(560, WHITE, l=(1050 - 560) // 2, t=(600 - round(560 * WM['h'] / WM['w'])) // 2), '3.5 × 2 in at 300 ppi')
-pr('pr-card-back', 'Business card · Back', 1050, 600, WHITE,
-   T('Name', 'First Last', 'sh2', BLACK, 50, l=48, t=48)
-   + T('Details', 'Job Title\n+1 (000) 000-0000\nname@nexamobility.com', 'n27', '#6F6F6F', 26, l=48, t=128)
-   + T('Address', '2057 Coolidge Street\nHollywood, FL, 33020\nUnited States', 'n27', '#6F6F6F', 26, l=48, t=344)
-   + T('Web', 'www.nexamobility.com', 'n27', '#6F6F6F', 26, l=48, t=500)
-   + qr_dots('https://nexamobility.com', 190, BLUE, r=48, t=52)
-   + wordmark(146, BLUE, r=48, b=64), '3.5 × 2 in at 300 ppi (from the NEXA card)')
-pr('pr-letterhead', 'Letterhead', 816, 1056, WHITE,
-   fill('Edge', BLUE, l=0, t=0, w=10, h=1056)
-   + wordmark(170, MIDNIGHT, l=64, t=56) + T('Department', 'ENGINEERING', 'sh3', MIDNIGHT, 13, r=64, t=72)
-   + stack('Addressee', [text('To', 'To', 'small', BLACK, 11), text('Name', 'Recipient Name', 'sh3', BLACK, 14), text('Address', 'Street, City, Postcode', 'small', BLACK, 11)], l=64, t=170, gap=4)
-   + T('Date', 'Date · 30 September 2026', 'small', BLACK, 11, r=64, t=170)
-   + stack('Letter', [text('Salutation', 'Dear Name,', 'sh3', BLACK, 13)] + [text('Paragraph', ABOUT + ' ' + ABOUT, 'body', BLACK, 12) for _ in range(3)], l=64, t=290, w=560, gap=14)
-   + stack('Sign-off', [text('Name', 'Sender Name', 'sh3', BLACK, 13), text('Role', 'Job Title', 'small', BLACK, 11)], l=64, t=700, gap=4)
-   + T('Footer', '2057 Coolidge Street, Hollywood, FL 33020 · nexamobility.com', 'n27', '#6F6F6F', 10, l=64, t=990), 'US Letter', 'doc')
-
 SECTION_META = [
     ('square', 'Social · Square posts', 'Eighteen 1080 × 1080 posts built from NEXA’s own references: night statements, case-study cards, X and slab of light, arcs, aurora, highlights, use cases, brandbook posts and containers.'),
     ('portrait', 'Social · Carousel & portrait', 'A five-slide case-study carousel (Oneview Healthcare) and a healthcare feature post, 1080 × 1350.'),
     ('stories', 'Social · Stories', 'Vertical 9:16. Keep type out of the top 250 px and bottom 340 px (turn on Guides).'),
     ('linkedin', 'LinkedIn & X', '1200 × 627 feed images and the 1584 × 396 company banner.'),
-    ('collateral', 'Sales collateral', 'US Letter one-pager and case-study templates, rebuilt from the NEXA healthcare and Oneview one-pagers.'),
-    ('slides', 'Presentation', '16:9 slides: cover, section divider, content, highlights and close.'),
     ('web', 'Web & email', 'Website hero and CTA band, newsletter header, email signature.'),
-    ('print', 'Stationery', 'Business card (from the NEXA card) and letterhead.'),
 ]

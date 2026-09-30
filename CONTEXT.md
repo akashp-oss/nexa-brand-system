@@ -82,14 +82,24 @@ What NEXA's own work does, and the library now follows:
 - **Photos:** natural colour; `phn-*` night tone for statements; Super Blue veil applied in layout for case studies.
 - **Placeholders:** the `ph-*` photos come from the Sonim system (mostly Pexels). Replace with NEXA photography.
 
-## 5. Asset sets (v3)
+## 5. Asset sets (v4)
 
-Library (48): Square posts (18) · Carousel & portrait (6) · Stories (4) · LinkedIn & X (6) · Sales collateral (2) ·
-Presentation (5) · Web & email (4) · Stationery (3). Brand guidelines: 9 boards.
+Library (71): Square posts (18) · Carousel & portrait (6) · Stories (4) · LinkedIn & X (6) · Web & email (4) ·
+Presentation (16, `deck.py`) · Case studies (4) · One-pagers (3) · Letterheads & stationery (10) (`docs.py`).
+Brand guidelines: 9 boards (`guide.py`).
+
+**Presentation** is built from NEXA's strategy decks (strategic growth plan, vision, why NEXA, front-line statement) and
+aligned to the brandbook: N27 uppercase headlines instead of Roboto Bold, Roboto Light body, frosted cut-corner
+cards, the right-hand vertical wordmark rail (as in NEXA's own decks), confidential footer, page numbers, and a
+Midnight veil on the bright aurora grounds so small type keeps its contrast.
+
+**QA:** `make qa` screenshots every artboard and runs `library/src/qa.js`, which fails on overlapping text, text on a
+logo, elements outside the margin and undersized wordmarks.
 
 ## 6. Open items
 
 - Partner and customer logos are dashed placeholders (Oneview, InfoBionic, Android, Rhino, Sonim).
 - Real NEXA photography; the healthcare product shot from the one-pager if a clean file exists.
+- Deck copy is taken from NEXA's strategy slides; figures marked * or YEAR need confirming before use.
 - Confirm the secondary colour (Electric Azure recommended) and N27 web-embedding licence.
 - The Figma social page is still unseen (figma.com is not reachable from the build environment); export it as PNG/PDF.
